@@ -742,7 +742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3cf925ced2e9524a9e17cb83ae4d96f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numOfEnemies: 100
+  numOfEnemies: 20
   botPrefab: {fileID: 1834416681189612, guid: 850557fd6d6632247bc10d23dd28c310, type: 2}
   MeshModifiers:
   - {fileID: 11400000, guid: d31b2cb2a75a54d5bb6402fe0bd8c6cf, type: 2}
@@ -775,7 +775,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60712efc3153a4819b0c79437175846d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _latitudeLongitude: 37.7648, -122.463
+  _latitudeLongitude: 37.496111111111, 126.95388888889
   _heading: 0
 --- !u!4 &1628209263
 Transform:

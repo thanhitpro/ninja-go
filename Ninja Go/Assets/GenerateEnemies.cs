@@ -59,7 +59,7 @@ public class GenerateEnemies : MonoBehaviour
 
             for (int i = 0; i < numOfEnemies; i++)
             {
-                Debug.Log("Bot " + i + ": ");
+                //Debug.Log("Bot " + i + ": ");
                 GameObject boti = Instantiate(botPrefab);
                 boti.transform.position = Conversions.GeoToWorldPosition(test,
                                                                  _map.CenterMercator,
@@ -86,15 +86,19 @@ public class GenerateEnemies : MonoBehaviour
     void OnDestroy()
     {
         _map.OnInitialized -= Query;
+        for (int i = 0; i < bots.Count; i++)
+        {
+            Destroy(bots[i]);
+        }
     }
 
     void Query()
     {
-        Debug.Log("Run here");
+        //Debug.Log("Run here");
         _map.OnInitialized -= Query;
         var wp = new Vector2d[2];
-        wp[0] = curPlayerPos;
-        wp[1] = botsPos2d[indexQuery];
+        wp[0] = botsPos2d[indexQuery];
+        wp[1] = curPlayerPos;
         var _directionResource = new DirectionResource(wp, RoutingProfile.Walking);
         _directionResource.Steps = true;
         curBotDir.Query(_directionResource, HandleDirectionsResponse);
@@ -106,7 +110,7 @@ public class GenerateEnemies : MonoBehaviour
         {
             return;
         }
-        Debug.Log("Run here out");
+        //Debug.Log("Run here out");
 
         var meshData = new MeshData();
         var dat = new List<Vector3>();
@@ -115,13 +119,18 @@ public class GenerateEnemies : MonoBehaviour
             dat.Add(Conversions.GeoToWorldPosition(point.x, point.y, _map.CenterMercator, _map.WorldRelativeScale).ToVector3xz());
         }
 
-        Debug.Log("Current Bot's Position = " + bots[indexHandle].transform.position.x + ", " + bots[indexHandle].transform.position.y);
-        bots[indexHandle].transform.position = dat[dat.Count-1];
-        Debug.Log("After update Bot's Position = " + bots[indexHandle].transform.position.x + ", " + bots[indexHandle].transform.position.y);
+        //Debug.Log("Current Bot's Position = " + bots[indexHandle].transform.position.x + ", " + bots[indexHandle].transform.position.y);
+        bots[indexHandle].transform.position = dat[0];
+        //Debug.Log("After update Bot's Position = " + bots[indexHandle].transform.position.x + ", " + bots[indexHandle].transform.position.y);
 
 
         var feat = new VectorFeatureUnity();
+        
         feat.Points.Add(dat);
+
+        bots[indexHandle].GetComponent<BotBehavior>().VectorFeatureUnity = feat;
+        bots[indexHandle].GetComponent<BotBehavior>().ReadyToMove = true;
+        bots[indexHandle].GetComponent<BotBehavior>().MovePoints = dat;
 
         foreach (MeshModifier mod in MeshModifiers.Where(x => x.Active))
         {
